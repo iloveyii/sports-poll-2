@@ -4,7 +4,11 @@
   "description": "This is sports application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-dev": "nodemon index.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset"
   },
   "keywords": [
     "Node",
@@ -15,7 +19,9 @@
   "author": "Hazrat Ali <iloveyii@yahoo.com>",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.1",
     "jest": "^25.1.0",
+    "sequelize-cli": "^5.5.1",
     "supertest": "^4.0.2"
   },
   "jest": {
@@ -23,5 +29,10 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
+  },
+  "dependencies": {
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.5"
   }
 }
