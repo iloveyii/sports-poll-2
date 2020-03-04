@@ -55,7 +55,25 @@ app.get('/api/v1/games',  (req, res)=> {
         res.status(200).json(results.rows)
     })
 });
-app.post('/api/v1/games',  (req, res)=> res.json({game: 1}));
+/**
+ "awayName": "Panthrakikos Komotini",
+ "group": "Greek Cup",
+ "homeName": "Chania FC",
+ "name": "Chania FC - Panthrakikos Komotini",
+ "sport": "FOOTBALL",
+ "country": "ENGLAND",
+ "state": "STARTED"
+ */
+app.post('/api/v1/games',  (req, res)=> {
+    client.query(
+        `INSERT INTO 
+          public."Games"("awayName", "group", "homeName", "name", "sport", "country", "state") 
+          VALUES('Panthrakikos Komotini', 'Greek Cup','Chania FC','Chania FC - Panthrakikos Komotini','FOOTBALL', 'ENGLAND', 'STARTED')
+          `);
+
+    res.status(201).json({game: 1});
+});
+
 app.delete('/api/v1/games/:id',  (req, res)=> res.json({game: 1}));
 app.put('/api/v1/games/:id',  (req, res)=> res.json({game: 1}));
 

@@ -16,7 +16,7 @@ describe('Game Endpoints', () => {
                 "country": "ENGLAND",
                 "state": "STARTED"
             });
-        expect(res.statusCode).toEqual(200)
+        expect(res.statusCode).toEqual(201)
         expect(res.body).toHaveProperty('game')
     })
 });
