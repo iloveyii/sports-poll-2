@@ -5,12 +5,12 @@ describe('Game Endpoints', () => {
         const res = await request(app)
             .post('/api/v1/games')
             .send({
-                "awayName": "Panthrakikos Komotini",
+                "awayName": "Football away team",
                 "createdAt": "2015-12-18T12:30:39.228Z",
                 "group": "Greek Cup",
-                "homeName": "Chania FC",
+                "homeName": "Football home team",
                 "id": 1002916450,
-                "name": "Chania FC - Panthrakikos Komotini",
+                "name": "Football away team - Football home team",
                 "objectId": "1UaQjc7lIb",
                 "sport": "FOOTBALL",
                 "country": "ENGLAND",

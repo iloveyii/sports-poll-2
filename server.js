@@ -65,12 +65,14 @@ app.get('/api/v1/games',  (req, res)=> {
  "state": "STARTED"
  */
 app.post('/api/v1/games',  (req, res)=> {
+    const {awayName, group, homeName, name, sport, country, state} = req.body;
     client.query(
         `INSERT INTO 
           public."Games"("awayName", "group", "homeName", "name", "sport", "country", "state") 
-          VALUES('Panthrakikos Komotini', 'Greek Cup','Chania FC','Chania FC - Panthrakikos Komotini','FOOTBALL', 'ENGLAND', 'STARTED')
+          VALUES('${awayName}', '${group}','${homeName}','${name}','${sport}', '${country}', '${state}')
           `);
-
+    console.log(req.body)
+    console.log(awayName, group, homeName, name, sport, country, state)
     res.status(201).json({game: 1});
 });
 
