@@ -1,0 +1,21 @@
+{
+  "name": "sports-poll",
+  "version": "1.0.0",
+  "description": "This is sports application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node",
+    "Js",
+    "React",
+    "Jest"
+  ],
+  "author": "Hazrat Ali <iloveyii@yahoo.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "supertest": "^4.0.2"
+  }
+}
