@@ -3,6 +3,22 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const Pool = require('pg').Pool
+
+const pool = new Pool({
+    url: 'postgres://ngnfhein:RPw8Gl...@drona.db.elephantsql.com:5432/ngnfhein',
+    user: 'ngnfhein',
+    host: 'drona.db.elephantsql.com',
+    database: 'ngnfhein',
+    password: 'password',
+    port: 5432,
+});
+
+var pg = require('pg');
+var conString = "postgres://ngnfhein:RPw8GlvfDa26UcZmyG82trgJsgOBFyPZ@drona.db.elephantsql.com:5432/ngnfhein";
+
+var client = new pg.Client(conString);
+client.connect();
 
 app.use(
     express.static(__dirname + '/public'),
@@ -31,7 +47,14 @@ app.get('/',  (req, res)=> {
     });
     return res.json({paths: defined_paths})
 });
-app.get('/api/v1/games',  (req, res)=> res.json({game: 1}));
+app.get('/api/v1/games',  (req, res)=> {
+    client.query('SELECT * FROM "public"."Games"  ORDER BY id ASC', (error, results) => {
+        if (error) {
+            throw error
+        }
+        res.status(200).json(results.rows)
+    })
+});
 app.post('/api/v1/games',  (req, res)=> res.json({game: 1}));
 app.delete('/api/v1/games/:id',  (req, res)=> res.json({game: 1}));
 app.put('/api/v1/games/:id',  (req, res)=> res.json({game: 1}));
