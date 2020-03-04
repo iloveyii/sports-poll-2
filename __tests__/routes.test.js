@@ -19,5 +19,13 @@ describe('Game Endpoints', () => {
         expect(res.statusCode).toEqual(201)
         expect(res.body).toHaveProperty('game')
     })
+
+    it('should fetch a game', async () => {
+        const res = await request(app)
+            .get('/api/v1/games')
+            .send({});
+        expect(res.statusCode).toEqual(200)
+        expect(res.body[0]).toHaveProperty('awayName')
+    })
 });
 
