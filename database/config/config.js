@@ -15,6 +15,18 @@ module.exports = {
   },
 };
 
+// Create models
+// sequelize model:generate --name Game --attributes awayName:string,homeName:string,createdAt:datetime,group:string,id:integer,name:string,sport:string,country:string,state:string
+
+// Run migrate
+// sequelize db:migrate
+
+// Undo all migrations
+// sequelize db:seed:all
+
+// Seed data
+// sequelize seed:generate --name User
+// sequelize db:seed:all
 /**
 {
   "development": {

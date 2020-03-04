@@ -39,6 +39,4 @@ app.put('/api/v1/games/:id',  (req, res)=> res.json({game: 1}));
 
 app.listen(8080, () => console.log('Server started on port ' + 8080));
 
-// INSTALL on SERVER
-// pm2 start server.js
-
+module.exports = app
