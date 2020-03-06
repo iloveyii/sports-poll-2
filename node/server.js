@@ -8,54 +8,23 @@ const Sequelize = require('sequelize')
 let conString = "postgres://ngnfhein:RPw8GlvfDa26UcZmyG82trgJsgOBFyPZ@drona.db.elephantsql.com:5432/ngnfhein";
 conString = "postgres://postgres:root1@3@localhost:5432/sports";
 const sequelize = new Sequelize(conString);
-const Model = Sequelize.Model;
 const GameModel = require('./database/models/game')
 
-class Game extends Model {
+
+const testConn = async () => {
+    // Test connection
+    await sequelize
+        .authenticate()
+        .then(() => {
+            console.log('Connection has been established successfully.');
+        })
+        .catch(err => {
+            console.error('Unable to connect to the database:', err);
+        })
 }
 
-// Test connection
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-        // Find all games
-        Game.init({
-            awayName: {type: Sequelize.STRING, allowNull: true},
-            homeName: Sequelize.STRING,
-            createdAt: Sequelize.DATE,
-            group: Sequelize.STRING,
-            id: {type: Sequelize.INTEGER, primaryKey: true},
-            name: Sequelize.STRING,
-            sport: Sequelize.STRING,
-            country: Sequelize.STRING,
-            state: Sequelize.STRING
-        }, {
-            sequelize,
-            modelName: "Games"
-        })
-        //Game.findAll().then(games => {
-            // console.log("All games:", JSON.stringify(games, null, 4));
-        //});
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+testConn();
 
-
-const pool = new Pool({
-    url: 'postgres://ngnfhein:RPw8Gl...@drona.db.elephantsql.com:5432/ngnfhein',
-    user: 'ngnfhein',
-    host: 'drona.db.elephantsql.com',
-    database: 'ngnfhein',
-    password: 'password',
-    port: 5432,
-});
-
-var pg = require('pg');
-
-var client = new pg.Client(conString);
-client.connect();
 
 app.use(
     express.static(__dirname + '/public'),
@@ -87,19 +56,22 @@ app.get('/', (req, res) => {
 app.get('/api/v1/games', (req, res) => {
     console.log('GET api/v1/games')
     const game = GameModel(sequelize, Sequelize)
-    game.findAll().then( games => res.status(200).json(games))
+    game.findAll().then(games => res.status(200).json(games))
+});
+
+app.get('/api/v1/games/:id', (req, res) => {
+    console.log('GET api/v1/games/:id')
+    const game = GameModel(sequelize, Sequelize)
+    const id = req.params.id ? req.params.id : null
+    game.findAll({id : id}).then(games => res.status(200).json(games))
 });
 
 app.post('/api/v1/games', (req, res) => {
     const {awayName, group, homeName, name, sport, country, state} = req.body;
-    client.query(
-        `INSERT INTO 
-          public."Games"("awayName", "group", "homeName", "name", "sport", "country", "state") 
-          VALUES('${awayName}', '${group}','${homeName}','${name}','${sport}', '${country}', '${state}')
-          `);
-    console.log(req.body)
-    console.log(awayName, group, homeName, name, sport, country, state)
-    res.status(201).json({game: 1});
+    const game = GameModel(sequelize, Sequelize)
+    game.create({
+        awayName:awayName, group:group, homeName:homeName, name:name, sport:sport, country:country, state:state
+    }).then( r => res.status(201).json({game: r}));
 });
 
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));

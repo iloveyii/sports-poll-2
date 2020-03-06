@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../server')
-describe('Game Endpoints', () => {
+describe('POST api/v1/games', () => {
     it('should create a new game', async () => {
         const res = await request(app)
             .post('/api/v1/games')
@@ -20,12 +20,17 @@ describe('Game Endpoints', () => {
         expect(res.body).toHaveProperty('game')
     })
 
-    it('should fetch a game', async () => {
-        const res = await request(app)
+
+});
+
+
+describe('GET /api/v1/games', function () {
+    it('responds with json', function (done) {
+        request(app)
             .get('/api/v1/games')
-            .send({});
-        expect(res.statusCode).toEqual(200)
-        expect(res.body[0]).toHaveProperty('awayName')
-    })
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200, done)
+    });
 });
 
