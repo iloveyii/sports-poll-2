@@ -9,6 +9,7 @@ let conString = "postgres://ngnfhein:RPw8GlvfDa26UcZmyG82trgJsgOBFyPZ@drona.db.e
 conString = "postgres://postgres:root1@3@localhost:5432/sports";
 const sequelize = new Sequelize(conString);
 const Model = Sequelize.Model;
+const GameModel = require('./database/models/game')
 
 class Game extends Model {
 }
@@ -85,26 +86,10 @@ app.get('/', (req, res) => {
 });
 app.get('/api/v1/games', (req, res) => {
     console.log('GET api/v1/games')
-
-    const games = async () => {
-        const rows = await
-            Game.findAll().then(games => {
-                console.log("All games:", JSON.stringify(games.length, null, 4));
-                return games
-            });
-        return res.status(200).json(rows)
-    };
-    games()
+    const game = GameModel(sequelize, Sequelize)
+    game.findAll().then( games => res.status(200).json(games))
 });
-/**
- "awayName": "Panthrakikos Komotini",
- "group": "Greek Cup",
- "homeName": "Chania FC",
- "name": "Chania FC - Panthrakikos Komotini",
- "sport": "FOOTBALL",
- "country": "ENGLAND",
- "state": "STARTED"
- */
+
 app.post('/api/v1/games', (req, res) => {
     const {awayName, group, homeName, name, sport, country, state} = req.body;
     client.query(
