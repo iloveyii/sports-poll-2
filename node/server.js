@@ -99,8 +99,9 @@ app.get('/api/v1/login', (req, res) => {
                 <form action="/api/v1/login" method="post">
                     <input type="email" required name="email" placeholder="Email" />
                     <input type="password" required name="password" placeholder="Password" />
-                    <input type="submit"/>
+                    <button type="submit"> Login </button>
                 </form>
+                <a href="/api/v1/register">Register</a>
             </body>
         </html>
     `)
@@ -115,7 +116,42 @@ app.post('/api/v1/login', (req, res) => {
         }
         return res.redirect('/api/v1/login')
     })
+});
 
+
+app.get('/api/v1/register', (req, res) => {
+    res.send(`
+        <html>
+            <body>
+                <form action="/api/v1/register" method="post">
+                    <input type="text" required name="username" placeholder="Username" />
+                    <input type="email" required name="email" placeholder="Email" />
+                    <input type="password" required name="password" placeholder="Password" />
+                    <button type="submit"> Register </button>
+                </form>
+                <a href="/api/v1/login">Login</a>
+            </body>
+        </html>
+    `)
+});
+
+app.post('/api/v1/register', (req, res) => {
+    const {username, email, password} = req.body
+    Login.findOne({where: {email: email}}).then(user => {
+        if (user) {
+            return res.send(`
+                <h1>This email is already registered</h1>
+                <a href="/api/v1/login">Login</a>
+            `)
+        } else {
+            Login.create({
+                email: email, password: password
+            }).then(r => res.send(`
+                <h1>User successfully registered</h1>
+                <a href="/api/v1/login">Login</a>
+            `));
+        }
+    })
 });
 
 app.listen(PORT, () => console.log('http://locahost:' + PORT));
