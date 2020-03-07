@@ -65,7 +65,7 @@ app.get('/api/v1/games', (req, res) => {
     Game.findAll().then(games => res.status(200).json(games))
 });
 
-app.get('/api/v1/random-games', redirectLogin, (req, res) => {
+app.get('/api/v1/random-games', (req, res) => {
     console.log('GET api/v1/random-games')
     Game.findAll().then(games => {
         const sports = _.uniq(_.map(games, 'sport'))
