@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const _ = require('lodash')
 const session = require('express-session')
+const bcrypt = require('bcrypt')
+
 const Game = require('./database/models').Game
 const Login = require('./database/models').Login
 
@@ -42,7 +44,6 @@ const redirectLogin = (req, res, next) => {
         next()
     }
 }
-
 
 app.get('/', (req, res) => {
     const paths = app._router.stack
@@ -92,8 +93,8 @@ app.post('/api/v1/games', (req, res) => {
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 app.put('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 
-app.get('/api/v1/login', (req, res) => {
-    res.send(`
+app.get('/api/v1/login', async (req, res) => {
+    await res.send(`
         <html>
             <body>
                 <form action="/api/v1/login" method="post">
@@ -107,20 +108,20 @@ app.get('/api/v1/login', (req, res) => {
     `)
 });
 
-app.post('/api/v1/login', (req, res) => {
+app.post('/api/v1/login', async (req, res) => {
     const {email, password} = req.body
-    Login.findOne({where: {email: email, password: password}}).then(user => {
-        if (user) {
-            req.session.userId = user.id
-            return res.redirect('/api/v1/random-games')
-        }
-        return res.redirect('/api/v1/login')
-    })
+    const user = await Login.findOne({where: {email: email}})
+    if (user && await bcrypt.compare(password, user.password)) {
+        req.session.userId = user.id
+        return res.redirect('/api/v1/random-games')
+    }
+    return res.redirect('/api/v1/login')
+
 });
 
 
-app.get('/api/v1/register', (req, res) => {
-    res.send(`
+app.get('/api/v1/register', async (req, res) => {
+    await res.send(`
         <html>
             <body>
                 <form action="/api/v1/register" method="post">
@@ -135,23 +136,27 @@ app.get('/api/v1/register', (req, res) => {
     `)
 });
 
-app.post('/api/v1/register', (req, res) => {
+app.post('/api/v1/register', async (req, res) => {
     const {username, email, password} = req.body
-    Login.findOne({where: {email: email}}).then(user => {
-        if (user) {
-            return res.send(`
-                <h1>This email is already registered</h1>
-                <a href="/api/v1/login">Login</a>
-            `)
-        } else {
-            Login.create({
-                email: email, password: password
-            }).then(r => res.send(`
+    const user = await Login.findOne({where: {email: email}})
+    if (user) {
+        return res.send(`
+            <h1>This email is already registered</h1>
+            <a href="/api/v1/login">Login</a>
+        `)
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10)
+        Login.create({
+            email: email, password: hashedPassword
+        }).then(r => res.send(`
                 <h1>User successfully registered</h1>
                 <a href="/api/v1/login">Login</a>
-            `));
-        }
-    })
+        `));
+
+    } catch (e) {
+        res.status(500).json(e)
+    }
 });
 
 app.listen(PORT, () => console.log('http://locahost:' + PORT));
