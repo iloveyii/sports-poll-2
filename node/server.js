@@ -7,6 +7,7 @@ const cors = require('cors');
 const _ = require('lodash')
 const session = require('express-session')
 const Game = require('./database/models').Game
+const Login = require('./database/models').Login
 
 
 const {
@@ -34,6 +35,14 @@ app.use(
     })
 );
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId) {
+        res.redirect('/api/v1/login')
+    } else {
+        next()
+    }
+}
+
 
 app.get('/', (req, res) => {
     const paths = app._router.stack
@@ -55,7 +64,7 @@ app.get('/api/v1/games', (req, res) => {
     Game.findAll().then(games => res.status(200).json(games))
 });
 
-app.get('/api/v1/random-games', (req, res) => {
+app.get('/api/v1/random-games', redirectLogin, (req, res) => {
     console.log('GET api/v1/random-games')
     Game.findAll().then(games => {
         const sports = _.uniq(_.map(games, 'sport'))
@@ -83,8 +92,32 @@ app.post('/api/v1/games', (req, res) => {
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 app.put('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 
-app.post('/api/v1/login', (req, res) => res.json({game: 1}));
+app.get('/api/v1/login', (req, res) => {
+    res.send(`
+        <html>
+            <body>
+                <form action="/api/v1/login" method="post">
+                    <input type="email" required name="email" placeholder="Email" />
+                    <input type="password" required name="password" placeholder="Password" />
+                    <input type="submit"/>
+                </form>
+            </body>
+        </html>
+    `)
+});
 
-app.listen(PORT, () => console.log('Server started on port ' + PORT));
+app.post('/api/v1/login', (req, res) => {
+    const {email, password} = req.body
+    Login.findOne({where: {email: email, password: password}}).then(user => {
+        if (user) {
+            req.session.userId = user.id
+            return res.redirect('/api/v1/random-games')
+        }
+        return res.redirect('/api/v1/login')
+    })
+
+});
+
+app.listen(PORT, () => console.log('http://locahost:' + PORT));
 
 module.exports = app
