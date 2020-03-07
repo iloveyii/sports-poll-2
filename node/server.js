@@ -113,10 +113,17 @@ app.post('/api/v1/login', async (req, res) => {
     const user = await Login.findOne({where: {email: email}})
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.userId = user.id
-        return res.redirect('/api/v1/random-games')
+        if(req.headers['content-type']==='application/json') {
+            res.status(200).json({login: 'success'})
+        } else {
+            return res.redirect('/api/v1/random-games')
+        }
     }
-    return res.redirect('/api/v1/login')
-
+    if(req.headers['content-type']==='application/json') {
+        res.status(200).json({login: 'fail'})
+    } else {
+        return res.redirect('/api/v1/login')
+    }
 });
 
 
@@ -148,11 +155,18 @@ app.post('/api/v1/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10)
         Login.create({
-            email: email, password: hashedPassword
-        }).then(r => res.send(`
-                <h1>User successfully registered</h1>
-                <a href="/api/v1/login">Login</a>
-        `));
+            username: username, email: email, password: hashedPassword
+        }).then(r => {
+            if(req.headers['content-type']==='application/json') {
+                res.status(201).json({register: 'success'})
+            } else {
+                return res.send(`
+                    <h1>User successfully registered</h1>
+                    <a href="/api/v1/login">Login</a>
+                `)
+            }
+
+        });
 
     } catch (e) {
         res.status(500).json(e)
