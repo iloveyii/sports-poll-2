@@ -1,39 +1,37 @@
 // Import required packages
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-//let conString = "postgres://ngnfhein:RPw8GlvfDa26UcZmyG82trgJsgOBFyPZ@drona.db.elephantsql.com:5432/ngnfhein";
-//conString = "postgres://postgres:root1@3@localhost:5432/sports";
-const Game = require('./database/models').Game
 const _ = require('lodash')
+const session = require('express-session')
+const Game = require('./database/models').Game
 
 
-const testConn = async () => {
-    // Test connection
-    await sequelize
-        .authenticate()
-        .then(() => {
-            console.log('Connection has been established successfully.');
-        })
-        .catch(err => {
-            console.error('Unable to connect to the database:', err);
-        })
-}
-
-//testConn();
-
+const {
+    PORT = 8080,
+    SESS_NAME = 'sid',
+    SESS_SECRET = 'thisisasecret',
+    SESS_LIFETIME = 1000 * 60 * 60 * 2, // 2 hrs
+} = process.env
 
 app.use(
     express.static(__dirname + '/public'),
     bodyParser.urlencoded({extended: true}),
     bodyParser.json(),
     cors(),
-    (req, res, next) => {
-        // req.body.title = 'I changed it here in mw';
-        // console.log('Inside middleware request body is : ', req);
-        next();
-    }
+    session({
+        name: SESS_NAME,
+        resave: false,
+        saveUninitialized: false,
+        secret: SESS_SECRET,
+        cookie: {
+            maxAge: SESS_LIFETIME,
+            sameSite: true,
+            secure: false
+        }
+    })
 );
 
 
@@ -61,7 +59,7 @@ app.get('/api/v1/random-games', (req, res) => {
     console.log('GET api/v1/random-games')
     Game.findAll().then(games => {
         const sports = _.uniq(_.map(games, 'sport'))
-        const rand_sport_id = _.random(0, sports.length-1)
+        const rand_sport_id = _.random(0, sports.length - 1)
         console.log(sports, rand_sport_id)
         const sport_selected = sports[rand_sport_id]
         Game.findAll({where: {sport: sport_selected}}).then(sports => res.status(200).json(sports))
@@ -87,6 +85,6 @@ app.put('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 
 app.post('/api/v1/login', (req, res) => res.json({game: 1}));
 
-app.listen(8080, () => console.log('Server started on port ' + 8080));
+app.listen(PORT, () => console.log('Server started on port ' + PORT));
 
 module.exports = app
