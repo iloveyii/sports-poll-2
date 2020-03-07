@@ -3,14 +3,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const Pool = require('pg').Pool
-const Sequelize = require('sequelize')
-let conString = "postgres://ngnfhein:RPw8GlvfDa26UcZmyG82trgJsgOBFyPZ@drona.db.elephantsql.com:5432/ngnfhein";
-conString = "postgres://postgres:root1@3@localhost:5432/sports";
-const sequelize = new Sequelize(conString);
-const GameModel = require('./database/models/game')
+//let conString = "postgres://ngnfhein:RPw8GlvfDa26UcZmyG82trgJsgOBFyPZ@drona.db.elephantsql.com:5432/ngnfhein";
+//conString = "postgres://postgres:root1@3@localhost:5432/sports";
+const Game = require('./database/models').Game
 const _ = require('lodash')
-
 
 
 const testConn = async () => {
@@ -25,7 +21,7 @@ const testConn = async () => {
         })
 }
 
-testConn();
+//testConn();
 
 
 app.use(
@@ -58,33 +54,30 @@ app.get('/', (req, res) => {
 
 app.get('/api/v1/games', (req, res) => {
     console.log('GET api/v1/games')
-    const game = GameModel(sequelize, Sequelize)
-    game.findAll().then(games => res.status(200).json(games))
+    Game.findAll().then(games => res.status(200).json(games))
 });
 
 app.get('/api/v1/random-games', (req, res) => {
     console.log('GET api/v1/random-games')
-    const game = GameModel(sequelize, Sequelize)
-    game.findAll().then(games => {
+    Game.findAll().then(games => {
         const sports = _.uniq(_.map(games, 'sport'))
-        const rand_sport_id = _.random(0, sports.length)
+        const rand_sport_id = _.random(0, sports.length-1)
+        console.log(sports, rand_sport_id)
         const sport_selected = sports[rand_sport_id]
-        game.findAll({where: {sport: sport_selected}}).then(sports => res.status(200).json(sports))
+        Game.findAll({where: {sport: sport_selected}}).then(sports => res.status(200).json(sports))
     })
 });
 
 app.get('/api/v1/games/:id', (req, res) => {
     console.log('GET api/v1/games/:id')
-    const game = GameModel(sequelize, Sequelize)
     const id = req.params.id ? req.params.id : null
     console.log('ID: ', id)
-    game.findAll({where: {id: id}}).then(games => res.status(200).json(games))
+    Game.findOne({where: {id: id}}).then(game => res.status(200).json(game))
 });
 
 app.post('/api/v1/games', (req, res) => {
     const {awayName, group, homeName, name, sport, country, state} = req.body;
-    const game = GameModel(sequelize, Sequelize)
-    game.create({
+    Game.create({
         awayName: awayName, group: group, homeName: homeName, name: name, sport: sport, country: country, state: state
     }).then(r => res.status(201).json({game: r}));
 });
@@ -92,6 +85,7 @@ app.post('/api/v1/games', (req, res) => {
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 app.put('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 
+app.post('/api/v1/login', (req, res) => res.json({game: 1}));
 
 app.listen(8080, () => console.log('Server started on port ' + 8080));
 
