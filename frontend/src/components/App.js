@@ -74,7 +74,11 @@ class App extends React.Component {
         const randomMcqs = this.getRandomQuestions(mcqs, MCQS_COUNT);
         randomMcqs.map(mcq => questions.push(new Model(mcq)));
         this.state = {questions: questions, questionId: 0, sports: []};
-        this.getData();
+    }
+
+    componentDidMount() {
+        const server = 'http://localhost:8080/api/v1/random-games';
+        axios.get(server).then(res => console.log(res.data))
     }
 
     getData() {
