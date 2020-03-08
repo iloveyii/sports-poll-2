@@ -90,6 +90,11 @@ app.post('/api/v1/games', (req, res) => {
     }).then(r => res.status(201).json({game: r}));
 });
 
+app.post('/api/v1/login-games', (req, res) => {
+    const {questions} = req.body;
+    console.log(questions)
+});
+
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 app.put('/api/v1/games/:id', (req, res) => res.json({game: 1}));
 
