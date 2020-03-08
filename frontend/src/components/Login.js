@@ -58,14 +58,14 @@ class Login extends React.Component {
                                 <div className="col-md-10 offset-md-1">
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <div className="form-group bmd-form-group">
+                                            <div className="form-group bmd-form-group text-left">
                                                 <label className="bmd-label-floating">Email</label>
                                                 <input onChange={e => this.handleChange(e)} id="email" type="email"
                                                        required className="form-control"/>
                                             </div>
                                         </div>
                                         <div className="col-md-12">
-                                            <div className="form-group">
+                                            <div className="form-group bmd-form-group text-left">
                                                 <label className="bmd-label-floating">Password</label>
                                                 <input onChange={e => this.handleChange(e)} id="password"
                                                        type="password" required className="form-control"/>
