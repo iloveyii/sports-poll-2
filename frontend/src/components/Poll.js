@@ -9,6 +9,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Thanks from './Thanks';
 
 const SHOW_APP_BAR = false;
 
@@ -48,7 +49,7 @@ function a11yProps(index) {
 class Poll extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {questions:[], currentQId: 0};
+        this.state = {questions:[], currentQId: 0, showThanks: false};
         this.handleTabClick = this.handleTabClick.bind(this);
         this.handleRadioClick = this.handleRadioClick.bind(this);
     }
@@ -71,7 +72,10 @@ class Poll extends React.Component {
     submitForm(){
         const server = 'http://localhost:8080/api/v1/login-games';
         const {questions} = this.state;
-        axios.post(server, {questions}).then(res => this.setState({questions:res.data}))
+        axios.post(server, {questions}).then(res => {
+            console.log('Posting')
+            this.setState({showThanks:true});
+        })
     }
 
     handleRadioClick(e) {
@@ -86,7 +90,7 @@ class Poll extends React.Component {
     }
 
     render() {
-        const {currentQId, questions} = this.state;
+        const {currentQId, questions, showThanks} = this.state;
         return (
             <div className="row">
                 <div className="col-md-4 offset-md-4">
@@ -113,81 +117,93 @@ class Poll extends React.Component {
                                     </Tabs>
                                 </AppBar>
                             }
-                            <SwipeableViews
-                                axis={'x'}
-                                index={currentQId}
-                                onChangeIndex={()=>null}
-                            >
-                                {
-                                    questions.map((q, index) =>
-                                        <TabPanel key={q.id} value={currentQId} index={index}
-                                                                                dir={'x'}>
+                            { showThanks===true ?
+                                <Thanks />
+                                :
+                                <SwipeableViews
+                                    axis={'x'}
+                                    index={currentQId}
+                                    onChangeIndex={() => null}
+                                >
+                                    {
+                                        questions.map((q, index) =>
+                                            <TabPanel key={q.id} value={currentQId} index={index}
+                                                      dir={'x'}>
 
-                                            <form>
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="info">
-                                                            <div className="icon icon-primary">
-                                                                <i className="material-icons">question_answer</i>
+                                                <form>
+                                                    <div className="row">
+                                                        <div className="col-md-12">
+                                                            <div className="info">
+                                                                <div className="icon icon-primary">
+                                                                    <i className="material-icons">question_answer</i>
+                                                                </div>
+                                                                <h4 className="info-title">{q.country}</h4>
+                                                                <p><strong>{q.sport} : </strong>{q.name}</p>
                                                             </div>
-                                                            <h4 className="info-title">{q.country}</h4>
-                                                            <p><strong>{q.sport} : </strong>{q.name}</p>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="form-check form-check-radio">
-                                                            <label className="form-check-label">
-                                                                <input className="form-check-input" type="radio"
-                                                                       name="winnerRadios"
-                                                                       onChange={e=>this.handleRadioClick(e)}
-                                                                       onClick={e=>this.handleRadioClick(e)}
-                                                                       id={HOME_WINS} value="team-a" checked={q.checked && q.checked===HOME_WINS?true:false} />
-                                                                Home team wins
-                                                                <span className="circle">
+                                                    <div className="row">
+                                                        <div className="col-md-12">
+                                                            <div className="form-check form-check-radio">
+                                                                <label className="form-check-label">
+                                                                    <input className="form-check-input" type="radio"
+                                                                           name="winnerRadios"
+                                                                           onChange={e => this.handleRadioClick(e)}
+                                                                           onClick={e => this.handleRadioClick(e)}
+                                                                           id={HOME_WINS} value="team-a"
+                                                                           checked={q.checked && q.checked === HOME_WINS ? true : false}/>
+                                                                    Home team wins
+                                                                    <span className="circle">
                                                                     <span className="check"></span>
                                                                 </span>
-                                                            </label>
-                                                        </div>
-                                                        <div className="form-check form-check-radio">
-                                                            <label className="form-check-label">
-                                                                <input className="form-check-input" type="radio"
-                                                                       name="winnerRadios"
-                                                                       onChange={e=>this.handleRadioClick(e)}
-                                                                       onClick={e=>this.handleRadioClick(e)}
-                                                                       id={DRAW} value="team-draw" checked={q.checked && q.checked===DRAW?true:false}/>
-                                                                Draw
-                                                                <span className="circle">
+                                                                </label>
+                                                            </div>
+                                                            <div className="form-check form-check-radio">
+                                                                <label className="form-check-label">
+                                                                    <input className="form-check-input" type="radio"
+                                                                           name="winnerRadios"
+                                                                           onChange={e => this.handleRadioClick(e)}
+                                                                           onClick={e => this.handleRadioClick(e)}
+                                                                           id={DRAW} value="team-draw"
+                                                                           checked={q.checked && q.checked === DRAW ? true : false}/>
+                                                                    Draw
+                                                                    <span className="circle">
                                                                     <span className="check"></span>
                                                                 </span>
-                                                            </label>
-                                                        </div>
-                                                        <div className="form-check form-check-radio">
-                                                            <label className="form-check-label">
-                                                                <input className="form-check-input" type="radio"
-                                                                       name="winnerRadios"
-                                                                       onChange={e=>this.handleRadioClick(e)}
-                                                                       onClick={e=>this.handleRadioClick(e)}
-                                                                       id={AWAY_WINS} value="team-b" checked={q.checked && q.checked===AWAY_WINS?true:false}/>
-                                                                Away team wins
-                                                                <span className="circle">
+                                                                </label>
+                                                            </div>
+                                                            <div className="form-check form-check-radio">
+                                                                <label className="form-check-label">
+                                                                    <input className="form-check-input" type="radio"
+                                                                           name="winnerRadios"
+                                                                           onChange={e => this.handleRadioClick(e)}
+                                                                           onClick={e => this.handleRadioClick(e)}
+                                                                           id={AWAY_WINS} value="team-b"
+                                                                           checked={q.checked && q.checked === AWAY_WINS ? true : false}/>
+                                                                    Away team wins
+                                                                    <span className="circle">
                                                                     <span className="check"></span>
                                                                 </span>
-                                                            </label>
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <button onClick={e => this.handleTabClick(e, index===0?0:index-1)} type="button" className="btn btn-outline-info pull-left">Previous</button>
-                                                <button onClick={e => this.handleTabClick(e, index<questions.length? index+1: index)} type="button" className="btn btn-outline-success pull-right">{index < questions.length-1?'Next':'Submit'}</button>
-                                                <div className="clearfix"></div>
-                                            </form>
+                                                    <button
+                                                        onClick={e => this.handleTabClick(e, index === 0 ? 0 : index - 1)}
+                                                        type="button"
+                                                        className="btn btn-outline-info pull-left">Previous
+                                                    </button>
+                                                    <button
+                                                        onClick={e => this.handleTabClick(e, index < questions.length ? index + 1 : index)}
+                                                        type="button"
+                                                        className="btn btn-outline-success pull-right">{index < questions.length - 1 ? 'Next' : 'Submit'}</button>
+                                                    <div className="clearfix"></div>
+                                                </form>
 
-                                    </TabPanel>)
-                                }
-                            </SwipeableViews>
-
-
+                                            </TabPanel>)
+                                    }
+                                </SwipeableViews>
+                            }
                         </div>
                     </div>
                 </div>

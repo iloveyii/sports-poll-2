@@ -92,7 +92,8 @@ app.post('/api/v1/games', (req, res) => {
 
 app.post('/api/v1/login-games', (req, res) => {
     const {questions} = req.body;
-    console.log(questions)
+    console.log(questions);
+    res.status(201).json({poll:'success'});
 });
 
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));
@@ -178,6 +179,9 @@ app.post('/api/v1/register', async (req, res) => {
     }
 });
 
+app.get('*', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+});
 app.listen(PORT, () => console.log('http://locahost:' + PORT));
 
 module.exports = app

@@ -2,9 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-const SERVER = 'http://localhost:8080/api/v1/login';
+const SERVER = 'http://localhost:8080/api/v1/register';
 
-class Login extends React.Component {
+class Register extends React.Component {
     constructor(props) {
         super(props);
         this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -12,11 +12,10 @@ class Login extends React.Component {
         this.state = {
             user: {
                 email: '',
-                password: '',
-                ['confirm-password']: '',
+                password: ''
             },
             alert: {
-                msg:'',
+                msg: '',
                 display: false
             }
         }
@@ -29,21 +28,14 @@ class Login extends React.Component {
         this.setState({user});
     }
 
-    showAlert(msg) {
-        const {alert} = this.state;
-        alert.msg = msg;
-        alert.display = true;
-        this.setState({alert});
-        setTimeout(()=>{
-            alert.display = false;
-            this.setState({alert})
-        }, 3000, this);
-    }
-
     handleButtonClick(e) {
         e.preventDefault();
         const {user} = this.state;
-        if(user.email && user.password) {
+        if (user.email && user.password && user['confirm-password']) {
+            if (user.password !== user['confirm-password']) {
+                this.showAlert('Password does not match!');
+                return false;
+            }
             axios.post(SERVER, {email: user.email, password: user.password},
                 {
                     headers: {
@@ -60,6 +52,18 @@ class Login extends React.Component {
         } else {
             this.showAlert('Email and Password cannot be blank!');
         }
+
+    }
+
+    showAlert(msg) {
+        const {alert} = this.state;
+        alert.msg = msg;
+        alert.display = true;
+        this.setState({alert});
+        setTimeout(() => {
+            alert.display = false;
+            this.setState({alert})
+        }, 3000, this);
     }
 
     render() {
@@ -103,11 +107,19 @@ class Login extends React.Component {
                                             </div>
                                         </div>
                                         <div className="col-md-12">
+                                            <div className="form-group bmd-form-group text-left">
+                                                <label className="bmd-label-floating">Confirm password</label>
+                                                <input onChange={e => this.handleChange(e)} id="confirm-password"
+                                                       type="password" required className="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
                                             <div className="form-group">
                                                 <br/>
                                                 <br/>
-                                                <Link to="/register" className="pull-left nav-link">Signup</Link>
-                                                <button onClick={e=>this.handleButtonClick(e)} type="submit" className="btn btn-primary pull-center">Login
+                                                <Link to="/login" className="pull-left nav-link">Login</Link>
+                                                <button onClick={e => this.handleButtonClick(e)} type="submit"
+                                                        className="btn btn-primary pull-center">Register
                                                 </button>
                                             </div>
                                         </div>
@@ -123,5 +135,5 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default Register;
 

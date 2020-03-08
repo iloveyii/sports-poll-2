@@ -4,6 +4,7 @@ import ParticlesBg from "particles-bg";
 
 import Ni from './Ni';
 import Login from './Login';
+import Register from './Register';
 import Poll from './Poll';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path={`/`} component={Login}/>
                     <Route exact path={`/login`} component={Login}/>
+                    <Route exact path={`/register`} component={Register}/>
                     <Route exact path={`/poll`} component={Poll}/>
                     <Route component={Ni}/>
                 </Switch>
