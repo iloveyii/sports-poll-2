@@ -1,4 +1,4 @@
-Sprts Poll
+Sports Poll
 =====================================
 
 The users use this application to vote for their favourite teams among a variety of different sports.
