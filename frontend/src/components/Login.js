@@ -55,6 +55,7 @@ class Login extends React.Component {
                     this.props.history.push('/poll')
                 } else {
                     console.log('Fail response', response)
+                    this.showAlert('Email or Password is incorrect!');
                 }
             })
         } else {

@@ -40,7 +40,7 @@ app.use(
 
 const redirectLogin = (req, res, next) => {
     if (!req.session.userId) {
-        res.redirect('/api/v1/login')
+        return res.redirect('/api/v1/login')
     } else {
         next()
     }
@@ -96,7 +96,7 @@ app.post('/api/v1/login-games', redirectLogin , async (req, res) => {
     console.log(questions);
     await questions.forEach(async question => {
         await Poll.upsert({
-            loginId: 1,
+            loginId: req.session.userId,
             gameId: question.id,
             checked: question.checked
         })
@@ -161,6 +161,9 @@ app.post('/api/v1/register', async (req, res) => {
     const {username, email, password} = req.body
     const user = await Login.findOne({where: {email: email}})
     if (user) {
+        if(req.headers['content-type']==='application/json') {
+            return res.status(201).json({register: 'fail', err: 'Email already exists!'})
+        }
         return res.send(`
             <h1>This email is already registered</h1>
             <a href="/api/v1/login">Login</a>
@@ -170,7 +173,7 @@ app.post('/api/v1/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10)
         Login.create({
             username: username, email: email, password: hashedPassword
-        }).then(r => {
+        }).then(user => {
             if(req.headers['content-type']==='application/json') {
                 res.status(201).json({register: 'success'})
             } else {
@@ -179,7 +182,8 @@ app.post('/api/v1/register', async (req, res) => {
                     <a href="/api/v1/login">Login</a>
                 `)
             }
-
+            req.session.userId = user.dataValues.id
+            console.log('user registered : ', user.dataValues)
         });
 
     } catch (e) {

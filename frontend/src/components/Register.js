@@ -42,11 +42,12 @@ class Register extends React.Component {
                         'Content-Type': 'application/json'
                     }
                 }).then(response => {
-                if (response.status === 200 && response.data.login === 'success') {
+                if (response.status === 201 && response.data.register === 'success') {
                     console.log('Login success');
                     this.props.history.push('/poll')
                 } else {
                     console.log('Fail response', response)
+                    this.showAlert('Email already registered!');
                 }
             })
         } else {

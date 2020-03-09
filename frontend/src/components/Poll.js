@@ -49,9 +49,25 @@ function a11yProps(index) {
 class Poll extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {questions:[], currentQId: 0, showThanks: false};
+        this.state = {questions:[], currentQId: 0, showThanks: false,
+            alert: {
+                msg:'',
+                display: false
+            }
+        };
         this.handleTabClick = this.handleTabClick.bind(this);
         this.handleRadioClick = this.handleRadioClick.bind(this);
+    }
+
+    showAlert(msg) {
+        const {alert} = this.state;
+        alert.msg = msg;
+        alert.display = true;
+        this.setState({alert});
+        setTimeout(()=>{
+            alert.display = false;
+            this.setState({alert})
+        }, 3000, this);
     }
 
     componentDidMount() {
@@ -73,8 +89,13 @@ class Poll extends React.Component {
         const server = 'http://localhost:8080/api/v1/login-games';
         const {questions} = this.state;
         axios.post(server, {questions}).then(res => {
-            console.log('Posting')
-            this.setState({showThanks:true});
+            console.log('Posting', res)
+            if(!res.data.poll || res.data.poll !== 'success') {
+                this.showAlert('You need to login!');
+                console.log('You need to login')
+            } else {
+                this.setState({showThanks: true});
+            }
         })
     }
 
@@ -90,16 +111,26 @@ class Poll extends React.Component {
     }
 
     render() {
-        const {currentQId, questions, showThanks} = this.state;
+        const {currentQId, questions, showThanks, alert} = this.state;
+
         return (
             <div className="row">
                 <div className="col-md-4 offset-md-4">
                     <div className="card">
                         <div className="card-header card-header-primary">
-                            <h4 className="card-title">Questions poll <strong>[{currentQId+1}/{questions.length}]</strong> </h4>
+                            <h4 className="card-title">Questions poll <strong>[{Number(currentQId)+1}/{ questions && questions.length}]</strong> </h4>
                             <p className="card-category">Complete the following questions</p>
                         </div>
                         <div className="card-body" style={{minHeight: '200px'}}>
+                            {alert.display &&
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="alert alert-info" role="alert">
+                                        <a href="javascript:;" className="alert-link">{alert.msg}</a>.
+                                    </div>
+                                </div>
+                            </div>
+                            }
                             { SHOW_APP_BAR &&
                                 <AppBar position="static" color="default">
                                     <Tabs
@@ -125,7 +156,7 @@ class Poll extends React.Component {
                                     index={currentQId}
                                     onChangeIndex={() => null}
                                 >
-                                    {
+                                    {   questions &&
                                         questions.map((q, index) =>
                                             <TabPanel key={q.id} value={currentQId} index={index}
                                                       dir={'x'}>
