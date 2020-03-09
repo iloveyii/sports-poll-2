@@ -17,8 +17,10 @@
     "react-swipeable-views": "^0.13.9"
   },
   "scripts": {
+    "delete:node:public": "rm ../node/public -Rf",
+    "mv:build:to:node:public": "mv build ../node/public",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rm build -Rf && npm run delete:node:public && react-scripts build && npm run mv:build:to:node:public",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

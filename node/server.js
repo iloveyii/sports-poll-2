@@ -32,8 +32,8 @@ app.use(
         secret: SESS_SECRET,
         cookie: {
             maxAge: SESS_LIFETIME,
-            sameSite: true,
-            secure: false
+            sameSite: 'none',
+            secure: false,
         }
     })
 );
@@ -194,6 +194,6 @@ app.post('/api/v1/register', async (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
-app.listen(PORT, () => console.log('http://locahost:' + PORT));
+app.listen(PORT, () => console.log('http://localhost:' + PORT));
 
 module.exports = app
