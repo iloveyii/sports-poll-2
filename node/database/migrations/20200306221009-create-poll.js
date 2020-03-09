@@ -2,14 +2,16 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Polls', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
+      gameId: {
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: false
       },
-      gameId: Sequelize.INTEGER,
-      loginId: Sequelize.INTEGER,
+      loginId: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: false
+      },
       checked: Sequelize.STRING,
       createdAt: {
         allowNull: false,

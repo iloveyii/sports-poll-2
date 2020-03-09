@@ -93,15 +93,17 @@ app.post('/api/v1/games', (req, res) => {
 
 app.post('/api/v1/login-games', redirectLogin , async (req, res) => {
     const {questions} = req.body;
-    console.log(questions);
+    const polls = []
     await questions.forEach(async question => {
-        await Poll.create({
+        polls.push({
             loginId: req.session.userId,
             gameId: question.id,
             checked: question.checked
         })
     })
-    res.status(201).json({poll:'success'});
+    console.log(polls);
+    Poll.bulkCreate(polls)
+    res.status(201).json({poll:'success', count: polls.length});
 });
 
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));

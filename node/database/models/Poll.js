@@ -1,13 +1,16 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Poll = sequelize.define('Poll', {
-    id: {
+    gameId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: false
     },
-    gameId: DataTypes.INTEGER,
-    loginId: DataTypes.INTEGER,
+    loginId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: false
+    },
     checked: DataTypes.STRING
   }, {
     sequelize,
