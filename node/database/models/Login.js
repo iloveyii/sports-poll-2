@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Login.associate = function(models) {
     // 1-to-many with Game
-    Login.belongsToMany(models.Game, {foreignKey: 'loginId', through: 'GameLogin'} )
+    Login.belongsToMany(models.Game, {foreignKey: 'loginId', through: 'Poll'} )
   };
   return Login;
 };

@@ -8,12 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING
-      },
-      password: {
-        type: Sequelize.STRING
-      },
+      gameId: Sequelize.INTEGER,
+      loginId: Sequelize.INTEGER,
+      checked: Sequelize.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

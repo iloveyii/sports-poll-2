@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Game.associate = function(models) {
     // 1-to-many with Login
-    Game.belongsToMany(models.Login, {foreignKey: 'gameId', through: 'GameLogin'} )
+    Game.belongsToMany(models.Login, {foreignKey: 'gameId', through: 'Poll'} )
   };
   return Game;
 };
