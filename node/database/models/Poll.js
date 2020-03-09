@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     gameId: DataTypes.INTEGER,
     loginId: DataTypes.INTEGER,
-    checked: DataTypes.String
+    checked: DataTypes.STRING
   }, {
     sequelize,
     modelName: "Polls"

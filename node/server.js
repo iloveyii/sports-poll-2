@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt')
 
 const Game = require('./database/models').Game
 const Login = require('./database/models').Login
+const Poll = require('./database/models').Poll
 
 
 const {
@@ -90,9 +91,16 @@ app.post('/api/v1/games', (req, res) => {
     }).then(r => res.status(201).json({game: r}));
 });
 
-app.post('/api/v1/login-games', (req, res) => {
+app.post('/api/v1/login-games', redirectLogin , async (req, res) => {
     const {questions} = req.body;
     console.log(questions);
+    await questions.forEach(async question => {
+        await Poll.create({
+            loginId: req.session.userId,
+            gameId: question.id,
+            checked: question.checked
+        })
+    })
     res.status(201).json({poll:'success'});
 });
 
