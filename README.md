@@ -1,8 +1,8 @@
 Sports Poll
 ===========
 
-The application is used to vote for the winning of a favourite team among a variety of different sports.
-The use first registers using his/her email and password and then login to vote for his/her favourite team from a random set of events.
+This application is used to vote for a favourite team in various sports.
+The user first registers and then login to vote for his/her favourite team from a random set of events in a particular sport at a time.
 
 ## Technology stack
    * Node
