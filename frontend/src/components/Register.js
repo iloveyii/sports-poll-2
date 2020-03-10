@@ -119,7 +119,7 @@ class Register extends React.Component {
                                                 <br/>
                                                 <br/>
                                                 <Link to="/login" className="pull-left nav-link">Login</Link>
-                                                <button onClick={e => this.handleButtonClick(e)} type="submit"
+                                                <button id="btn-register" onClick={e => this.handleButtonClick(e)} type="submit"
                                                         className="btn btn-primary pull-center">Register
                                                 </button>
                                             </div>
