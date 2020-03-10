@@ -4,6 +4,7 @@ Sports Poll
 This application is used to vote for a favourite team in various sports.
 The user first registers and then login to vote for his/her favourite team from a random set of events in a particular sport at a time.
 
+![screenshot](https://github.com/iloveyii/sports-poll-2/blob/master/frontend/screenshot.png)
 ## Technology stack
    * Node
    * Sequelize, Postgres
