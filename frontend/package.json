@@ -21,8 +21,7 @@
     "mv:build:to:node:public": "mv build ../node/public",
     "start": "react-scripts start",
     "build": "rm build -Rf && npm run delete:node:public && react-scripts build && npm run mv:build:to:node:public",
-    "test2": "jest",
-    "test:unit" : "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
