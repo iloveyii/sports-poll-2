@@ -16,7 +16,7 @@ The user first registers and then login to vote for his/her favourite team from 
    ``` 
    git clone https://github.com/iloveyii/sports-poll-2.git
    ```
-   * Their are two directories node and frontend, therefore install npm packages accordindly.
+   * Their are two directories node and frontend, therefore install npm packages accordingly.
 ```
     cd node && npm i
     cd ..
@@ -29,7 +29,7 @@ The user first registers and then login to vote for his/her favourite team from 
     cd node
     npm run test
 ```
-   * Run the tests for frontend as follows. 
+   * Run the tests for frontend as follows. Please run node server before running these tests.
 ```npm
     cd frontend
     npm run test
