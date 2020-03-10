@@ -108,7 +108,7 @@ class Login extends React.Component {
                                                 <br/>
                                                 <br/>
                                                 <Link to="/register" className="pull-left nav-link">Signup</Link>
-                                                <button onClick={e=>this.handleButtonClick(e)} type="submit" className="btn btn-primary pull-center">Login
+                                                <button id="btn-login" onClick={e=>this.handleButtonClick(e)} type="submit" className="btn btn-primary pull-center">Login
                                                 </button>
                                             </div>
                                         </div>

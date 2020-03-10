@@ -21,7 +21,7 @@
     "mv:build:to:node:public": "mv build ../node/public",
     "start": "react-scripts start",
     "build": "rm build -Rf && npm run delete:node:public && react-scripts build && npm run mv:build:to:node:public",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,7 +40,11 @@
     ]
   },
   "devDependencies": {
+    "faker": "^4.1.0",
+    "jest": "24.9.0",
+    "jest-cli": "^25.1.0",
     "jest-dom": "^4.0.0",
+    "puppeteer": "^2.1.1",
     "react-test-renderer": "^16.12.0"
   }
 }
