@@ -1,8 +1,8 @@
 Sports Poll
-=====================================
+===========
 
-The users use this application to vote for their favourite teams among a variety of different sports.
-The use first registers using his/her email and password and then logins to vote for his/her favourite team from a random set of events.
+The application is used to vote for the winning of a favourite team among a variety of different sports.
+The use first registers using his/her email and password and then login to vote for his/her favourite team from a random set of events.
 
 ## Technology stack
    * Node
@@ -12,7 +12,10 @@ The use first registers using his/her email and password and then logins to vote
    * Test : Supertest, Mocha, Jest
    
 ## Installations
-   * Clone the repo as `git clone https://github.com/iloveyii/sports-poll-2.git`
+   * Clone the repo as 
+   ``` 
+   git clone https://github.com/iloveyii/sports-poll-2.git
+   ```
    * Their are two directories node and frontend, therefore install npm packages accordindly.
 ```
     cd node && npm i
@@ -20,6 +23,7 @@ The use first registers using his/her email and password and then logins to vote
     cd frontend && npm i
  ```
  ## Tests
+   * Create a db in Postgres and change .env file at node/.env accordingly.
    * Run the tests for node as follows. Nb: it will reset db. Node server should not be running already.
 ```npm
     cd node
@@ -48,7 +52,7 @@ The use first registers using his/her email and password and then logins to vote
     
 ## Requirements
 
-   * You many need to install the following.
+   * You may need to install the following.
      1. node >= 10.16.0
      2. npm >= 6.9.0
      3. Postgres
