@@ -128,13 +128,13 @@ app.post('/api/v1/login', async (req, res) => {
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.userId = user.id
         if(req.headers['content-type']==='application/json') {
-            res.status(200).json({login: 'success'})
+            return res.status(200).json({login: 'success'})
         } else {
             return res.redirect('/api/v1/random-games')
         }
     }
     if(req.headers['content-type']==='application/json') {
-        res.status(200).json({login: 'fail'})
+        return res.status(200).json({login: 'fail'})
     } else {
         return res.redirect('/api/v1/login')
     }
