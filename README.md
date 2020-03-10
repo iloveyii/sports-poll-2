@@ -43,10 +43,10 @@ The use first registers using his/her email and password and then login to vote 
     npm run migrate:reset
     npm start
 ```
-   * Start React app like 
+   * Start React app like [You need to run it from same domain (localhost:8080) for cookies to work, therefore build React app and serve it from node app]
 ``` 
     cd frontend
-    npm start
+    npm run build
 ```
 
     
