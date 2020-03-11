@@ -57,6 +57,7 @@ The user first registers and then login to vote for his/her favourite team from 
     npm run build
 ```
    * Browse to `http://localhost:8080` to see the frontend app up and running.
+   ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/frontend/frontend-demo.gif)
 
     
 ## Requirements
