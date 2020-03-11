@@ -14,6 +14,7 @@ The user first registers and then login to vote for his/her favourite team from 
    
 ## Installations
    * Clone the repo as 
+      ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/clone-install-repo.gif)
    ``` 
    git clone https://github.com/iloveyii/sports-poll-2.git
    ```
