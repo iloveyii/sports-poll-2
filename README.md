@@ -20,6 +20,7 @@ The user first registers and then login to vote for his/her favourite team from 
    ```
    * Their are two directories node and frontend, therefore install npm packages accordingly.
 ```
+    cd sports-poll-2
     cd node && npm i
     cd ..
     cd frontend && npm i
