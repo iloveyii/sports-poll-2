@@ -46,7 +46,7 @@ const redirectLogin = (req, res, next) => {
     }
 }
 
-app.get('/', (req, res) => {
+app.get('/api/v1', (req, res) => {
     const paths = app._router.stack
     const defined_paths = []
     // console.log(Object.keys(paths))

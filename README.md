@@ -49,12 +49,14 @@ The user first registers and then login to vote for his/her favourite team from 
     npm run migrate:reset
     npm start
 ```
+   * To see a list of API endpoints browse to `http://localhost:8080/api/v1`
    * Start React app like [You need to run it from same domain (localhost:8080) for cookies to work, therefore build React app and serve it from node app]
     ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/frontend/frontend-build.gif)
 ``` 
     cd frontend
     npm run build
 ```
+   * Browse to `http://localhost:8080` to see the frontend app up and running.
 
     
 ## Requirements
