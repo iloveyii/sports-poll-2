@@ -41,12 +41,14 @@ The user first registers and then login to vote for his/her favourite team from 
  
  ## First run
    * Start the node server ( set credentials for node in .env). Better to reset the db.
+    ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/node/node-migrate.gif)
 ```
     cd node
     npm run migrate:reset
     npm start
 ```
    * Start React app like [You need to run it from same domain (localhost:8080) for cookies to work, therefore build React app and serve it from node app]
+    ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/frontend/frontend-build.gif)
 ``` 
     cd frontend
     npm run build
