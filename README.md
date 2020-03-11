@@ -26,11 +26,13 @@ The user first registers and then login to vote for his/her favourite team from 
  ## Tests
    * Create a db in Postgres and change .env file at node/.env accordingly.
    * Run the tests for node as follows. Nb: it will reset db. Node server should not be running already.
+   ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/node/test-node.gif)
 ```npm
     cd node
     npm run test
 ```
    * Run the tests for frontend as follows. Please run node server before running these tests.
+    ![demo](https://github.com/iloveyii/sports-poll-2/blob/master/frontend/test-frontend.gif)
 ```npm
     cd frontend
     npm run test
