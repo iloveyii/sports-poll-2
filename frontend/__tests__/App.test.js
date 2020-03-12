@@ -18,6 +18,7 @@ describe(
         });
 
         it('should load without error', async () => {
+            await page.goto('http://localhost:8080')
             let text = await page.evaluate(() => document.body.textContent)
             expect(text).toContain('Signup')
         })
