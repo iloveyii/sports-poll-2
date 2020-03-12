@@ -71,16 +71,13 @@ class Login extends React.Component {
                 <div className="col-md-4 offset-md-4">
                     <div className="card card-profile">
                         <div className="card-avatar">
-                            <a href="javascript:;">
                                 <img className="img" src="/images/user-avatar.png"/>
-                            </a>
                         </div>
                         <div className="card-body">
                             {alert.display &&
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="alert alert-info" role="alert">
-                                        <a href="javascript:;" className="alert-link">{alert.msg}</a>.
                                     </div>
                                 </div>
                             </div>
