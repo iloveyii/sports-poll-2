@@ -66,3 +66,15 @@ The user first registers and then login to vote for his/her favourite team from 
      1. node >= 10.16.0
      2. npm >= 6.9.0
      3. Postgres
+
+
+## Deploy on AWS 
+   * Install aws command line on Ubuntu 18.04 as
+```
+   sudo apt update
+   sudo apt install awscli
+   aws --version
+   sudo apt-get purge awscli && sudo pip install awscli // if cert err then use
+
+```
+  * Configure aws command line
