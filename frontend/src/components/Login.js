@@ -2,7 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-const SERVER = 'http://localhost:8080/api/v1/login';
+let SERVER = process.env.REACT_APP_SERVER_URL ? process.env.REACT_APP_SERVER_URL : 'http://localhost:8090';
+axios.get('/env.json').then(response => {
+    if (response.status === 200 && response.data.REACT_APP_SERVER_URL) {
+        console.log('JSON ENV file exists :', response.data);
+        SERVER = response.data.REACT_APP_SERVER_URL
+    }
+});
 
 class Login extends React.Component {
     constructor(props) {
@@ -16,7 +22,7 @@ class Login extends React.Component {
                 ['confirm-password']: '',
             },
             alert: {
-                msg:'',
+                msg: '',
                 display: false
             }
         }
@@ -34,7 +40,7 @@ class Login extends React.Component {
         alert.msg = msg;
         alert.display = true;
         this.setState({alert});
-        setTimeout(()=>{
+        setTimeout(() => {
             alert.display = false;
             this.setState({alert})
         }, 3000, this);
@@ -42,9 +48,10 @@ class Login extends React.Component {
 
     handleButtonClick(e) {
         e.preventDefault();
+        const END_POINT = '/api/v1/login';
         const {user} = this.state;
-        if(user.email && user.password) {
-            axios.post(SERVER, {email: user.email, password: user.password},
+        if (user.email && user.password) {
+            axios.post(SERVER + END_POINT, {email: user.email, password: user.password},
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -71,7 +78,7 @@ class Login extends React.Component {
                 <div className="col-md-4 offset-md-4">
                     <div className="card card-profile">
                         <div className="card-avatar">
-                                <img className="img" src="/images/user-avatar.png"/>
+                            <img className="img" src="/images/user-avatar.png"/>
                         </div>
                         <div className="card-body">
                             {alert.display &&
@@ -105,7 +112,8 @@ class Login extends React.Component {
                                                 <br/>
                                                 <br/>
                                                 <Link to="/register" className="pull-left nav-link">Signup</Link>
-                                                <button id="btn-login" onClick={e=>this.handleButtonClick(e)} type="submit" className="btn btn-primary pull-center">Login
+                                                <button id="btn-login" onClick={e => this.handleButtonClick(e)}
+                                                        type="submit" className="btn btn-primary pull-center">Login
                                                 </button>
                                             </div>
                                         </div>

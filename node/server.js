@@ -14,7 +14,7 @@ const Poll = require('./database/models').Poll
 
 
 const {
-    PORT = 8080,
+    PORT = 8090,
     SESS_NAME = 'sid',
     SESS_SECRET = 'thisisasecret',
     SESS_LIFETIME = 1000 * 60 * 60 * 2, // 2 hrs
@@ -91,7 +91,7 @@ app.post('/api/v1/games', (req, res) => {
     }).then(r => res.status(201).json({game: r}));
 });
 
-app.post('/api/v1/login-games', redirectLogin , async (req, res) => {
+app.post('/api/v1/login-games', redirectLogin, async (req, res) => {
     const {questions} = req.body;
     console.log(questions);
     await questions.forEach(async question => {
@@ -101,7 +101,7 @@ app.post('/api/v1/login-games', redirectLogin , async (req, res) => {
             checked: question.checked
         })
     })
-    res.status(201).json({poll:'success'});
+    res.status(201).json({poll: 'success'});
 });
 
 app.delete('/api/v1/games/:id', (req, res) => res.json({game: 1}));
@@ -122,18 +122,28 @@ app.get('/api/v1/login', async (req, res) => {
     `)
 });
 
+app.get('/api/v1/islogin', async (req, res) => {
+    console.log('GET /api/v1/islogin', req.session, req.headers.cookie)
+    if (!req.session.userId) {
+        return res.status(200).json({login: 'fail', user_id: 'f' + req.session.userId})
+    }
+    return res.status(200).json({login: 'success', user_id: 's' + req.session.userId})
+
+})
+
 app.post('/api/v1/login', async (req, res) => {
     const {email, password} = req.body
+    if (!email || !password) return res.status(200).json({login: 'fail'})
     const user = await Login.findOne({where: {email: email}})
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.userId = user.id
-        if(req.headers['content-type']==='application/json') {
+        if (req.headers['content-type'] === 'application/json') {
             return res.status(200).json({login: 'success'})
         } else {
             return res.redirect('/api/v1/random-games')
         }
     }
-    if(req.headers['content-type']==='application/json') {
+    if (req.headers['content-type'] === 'application/json') {
         return res.status(200).json({login: 'fail'})
     } else {
         return res.redirect('/api/v1/login')
@@ -161,7 +171,7 @@ app.post('/api/v1/register', async (req, res) => {
     const {username, email, password} = req.body
     const user = await Login.findOne({where: {email: email}})
     if (user) {
-        if(req.headers['content-type']==='application/json') {
+        if (req.headers['content-type'] === 'application/json') {
             return res.status(201).json({register: 'fail', err: 'Email already exists!'})
         }
         return res.send(`
@@ -174,7 +184,7 @@ app.post('/api/v1/register', async (req, res) => {
         Login.create({
             username: username, email: email, password: hashedPassword
         }).then(user => {
-            if(req.headers['content-type']==='application/json') {
+            if (req.headers['content-type'] === 'application/json') {
                 res.status(201).json({register: 'success'})
             } else {
                 return res.send(`

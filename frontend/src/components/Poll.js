@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Thanks from './Thanks';
 
+let SERVER = process.env.REACT_APP_SERVER_URL ? process.env.REACT_APP_SERVER_URL : 'http://localhost:8090';
+
 const SHOW_APP_BAR = false;
 
 const HOME_WINS = 'team-a';
@@ -86,9 +88,9 @@ class Poll extends React.Component {
     }
 
     submitForm(){
-        const server = 'http://localhost:8080/api/v1/login-games';
+        const END_POINT = '/api/v1/login-games'
         const {questions} = this.state;
-        axios.post(server, {questions}).then(res => {
+        axios.post(SERVER + END_POINT, {questions}).then(res => {
             console.log('Posting', res)
             if(!res.data.poll || res.data.poll !== 'success') {
                 this.showAlert('You need to login!');
