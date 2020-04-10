@@ -2,13 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-let SERVER = process.env.REACT_APP_SERVER_URL ? process.env.REACT_APP_SERVER_URL : 'http://localhost:8090';
-axios.get('/env.json').then(response => {
-    if (response.status === 200 && response.data.REACT_APP_SERVER_URL) {
-        console.log('JSON ENV file exists :', response.data);
-        SERVER = response.data.REACT_APP_SERVER_URL
-    }
-});
+let SERVER = process.env.REACT_APP_SERVER_URL ? process.env.REACT_APP_SERVER_URL : '';
 
 class Login extends React.Component {
     constructor(props) {
